@@ -37,7 +37,8 @@ export function Home() {
 						{exercises.map(exercise => (
 							<li key={exercise.id}>
 								<Link
-									to={exercise.path}
+									to="/exercises/$exerciseId"
+									params={{ exerciseId: exercise.id.toString() }}
 									className="exercise-card"
 									aria-label={`Упражнение ${exercise.id}: ${exercise.title}, трудност ${exercise.difficulty}, ${stateApproachLabel[exercise.stateApproach]}`}>
 									<div

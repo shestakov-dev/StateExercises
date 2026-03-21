@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
 import {
 	difficultyClassModifier,
 	stateApproachLabel,
@@ -10,10 +9,9 @@ import { ThemeSwitcher } from "../components/ThemeSwitcher";
 
 interface ExerciseLayoutProps {
 	exerciseId: number;
-	children: ReactNode;
 }
 
-export function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
+export function ExerciseLayout({ exerciseId }: ExerciseLayoutProps) {
 	const exercise = getExerciseById(exerciseId);
 
 	if (!exercise) {
@@ -28,6 +26,7 @@ export function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 		description,
 		hint,
 		codeExample,
+		pageComponent: ExercisePage,
 	} = exercise;
 
 	return (
@@ -134,7 +133,7 @@ export function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 						Демо
 					</p>
 
-					{children}
+					<ExercisePage />
 				</section>
 			</div>
 		</div>

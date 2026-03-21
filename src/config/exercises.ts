@@ -1,3 +1,11 @@
+import { CounterPage } from "../pages/CounterPage";
+import { DashboardPage } from "../pages/DashboardPage";
+import { EcommercePage } from "../pages/EcommercePage";
+import { NotificationsPage } from "../pages/NotificationsPage";
+import { ShoppingCartPage } from "../pages/ShoppingCartPage";
+import { ThemePage } from "../pages/ThemePage";
+import { TodoPage } from "../pages/TodoPage";
+
 export type Difficulty = "Лесна" | "Средна" | "Сложна" | "Много сложна";
 export type StateApproach =
 	| "useReducer"
@@ -10,7 +18,7 @@ export type StateApproach =
 export interface Exercise {
 	id: number;
 	title: string;
-	path: string;
+	pageComponent: React.ComponentType;
 	difficulty: Difficulty;
 	stateApproach: StateApproach;
 	description: string;
@@ -38,7 +46,7 @@ export const exercises: Exercise[] = [
 	{
 		id: 1,
 		title: "Брояч с useReducer",
-		path: "/exercises/counter",
+		pageComponent: CounterPage,
 		difficulty: "Лесна",
 		stateApproach: "useReducer",
 		description:
@@ -69,7 +77,7 @@ function Counter() {
 	{
 		id: 2,
 		title: "Theme Toggle с Context API",
-		path: "/exercises/theme-toggle",
+		pageComponent: ThemePage,
 		difficulty: "Лесна",
 		stateApproach: "contextApi",
 		description:
@@ -98,7 +106,7 @@ function useTheme() {
 	{
 		id: 3,
 		title: "Система за известия",
-		path: "/exercises/notifications",
+		pageComponent: NotificationsPage,
 		difficulty: "Средна",
 		stateApproach: "contextReducer",
 		description:
@@ -131,7 +139,7 @@ function NotificationProvider({ children }) {
 	{
 		id: 4,
 		title: "Количка за пазаруване",
-		path: "/exercises/shopping-cart",
+		pageComponent: ShoppingCartPage,
 		difficulty: "Средна",
 		stateApproach: "useReducer",
 		description:
@@ -167,7 +175,7 @@ function NotificationProvider({ children }) {
 	{
 		id: 5,
 		title: "Multi-Context Dashboard",
-		path: "/exercises/dashboard",
+		pageComponent: DashboardPage,
 		difficulty: "Сложна",
 		stateApproach: "multiContext",
 		description:
@@ -200,7 +208,7 @@ const t = {
 	{
 		id: 6,
 		title: "Todo App със Zustand",
-		path: "/exercises/todo",
+		pageComponent: TodoPage,
 		difficulty: "Сложна",
 		stateApproach: "zustand",
 		description:
@@ -233,7 +241,7 @@ const t = {
 	{
 		id: 7,
 		title: "Мини e-commerce",
-		path: "/exercises/ecommerce",
+		pageComponent: EcommercePage,
 		difficulty: "Много сложна",
 		stateApproach: "combined",
 		description:
