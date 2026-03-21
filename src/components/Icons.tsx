@@ -308,3 +308,21 @@ export function IconGlobe({ className, size = 16 }: IconProps) {
 		</svg>
 	);
 }
+
+export function IconSearch({ className, size = 16 }: IconProps) {
+	return (
+		<svg
+			{...defaults}
+			width={size}
+			height={size}
+			strokeWidth="2"
+			className={className}>
+			<circle
+				cx="11"
+				cy="11"
+				r="8"
+			/>
+			<path d="m21 21-4.35-4.35" />
+		</svg>
+	);
+}

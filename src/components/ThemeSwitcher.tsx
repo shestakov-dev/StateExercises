@@ -26,7 +26,7 @@ export function ThemeSwitcher({
 			<span
 				className="theme-switcher__icon"
 				aria-hidden="true">
-				{isDark ? <IconMoon size={16} /> : <IconSun size={16} />}
+				{isDark ? <IconMoon /> : <IconSun />}
 			</span>
 
 			<span className="theme-switcher__text">{currentThemeLabel}</span>

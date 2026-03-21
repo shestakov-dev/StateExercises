@@ -219,7 +219,7 @@ export function AddNotificationPanel() {
 							className={`button notif-add-btn notif-add-btn--${button.type}`}
 							onClick={() => addNotification(button.type, button.message)}
 							aria-label={`Добави ${config.label.toLowerCase()} известие`}>
-							<config.Icon size={16} />
+							<config.Icon />
 
 							{config.label}
 						</button>
@@ -282,7 +282,7 @@ export function NotificationList() {
 									className="notif-item__close"
 									onClick={() => dismissNotification(notification.id)}
 									aria-label={`Затвори известие: ${notification.message}`}>
-									<IconX size={16} />
+									<IconX />
 								</button>
 							</li>
 						);
