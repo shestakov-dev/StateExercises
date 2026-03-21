@@ -8,6 +8,12 @@ export interface Todo {
 
 export type FilterType = "all" | "active" | "completed";
 
+export interface TodoStats {
+	total: number;
+	done: number;
+	remaining: number;
+}
+
 interface TodoState {
 	todos: Todo[];
 	filter: FilterType;
@@ -20,7 +26,7 @@ interface TodoState {
 	setSearch: (query: string) => void;
 
 	getFilteredTodos: () => Todo[];
-	getStats: () => { total: number; done: number; remaining: number };
+	getStats: () => TodoStats;
 }
 
 export const useTodoStore = create<TodoState>((set, get) => ({

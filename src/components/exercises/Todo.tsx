@@ -1,9 +1,21 @@
-import { useState, useId, type KeyboardEvent } from "react";
+import { useMemo, useState, useId, type KeyboardEvent } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useTodoStore, type FilterType } from "../../stores/todoStore";
 import { IconX, IconSearch } from "../Icons";
 
 export function Stats() {
-	const { total, done, remaining } = useTodoStore(store => store.getStats());
+	const { todos, getStats } = useTodoStore(
+		useShallow(store => ({
+			todos: store.todos,
+			getStats: store.getStats,
+		})),
+	);
+
+	const { total, done, remaining } = useMemo(
+		() => getStats(),
+		[getStats, todos],
+	);
+
 	const completionPercentage = total > 0 ? Math.round((done / total) * 100) : 0;
 
 	return (
@@ -75,7 +87,9 @@ export function Stats() {
 }
 
 export function AddTodoForm() {
-	const addTodo = useTodoStore(store => store.addTodo);
+	const { addTodo } = useTodoStore(
+		useShallow(store => ({ addTodo: store.addTodo })),
+	);
 
 	const [text, setText] = useState("");
 
@@ -134,8 +148,12 @@ export function AddTodoForm() {
 }
 
 export function SearchInput() {
-	const searchQuery = useTodoStore(store => store.searchQuery);
-	const setSearch = useTodoStore(store => store.setSearch);
+	const { searchQuery, setSearch } = useTodoStore(
+		useShallow(store => ({
+			searchQuery: store.searchQuery,
+			setSearch: store.setSearch,
+		})),
+	);
 
 	const inputId = useId();
 
@@ -165,8 +183,12 @@ export function SearchInput() {
 }
 
 export function FilterButtons() {
-	const filter = useTodoStore(store => store.filter);
-	const setFilter = useTodoStore(store => store.setFilter);
+	const { filter, setFilter } = useTodoStore(
+		useShallow(store => ({
+			filter: store.filter,
+			setFilter: store.setFilter,
+		})),
+	);
 
 	const options: Array<{ key: FilterType; label: string }> = [
 		{ key: "all", label: "Всички" },
@@ -204,8 +226,12 @@ function TodoItem({
 	text: string;
 	done: boolean;
 }) {
-	const toggleTodo = useTodoStore(store => store.toggleTodo);
-	const deleteTodo = useTodoStore(store => store.deleteTodo);
+	const { toggleTodo, deleteTodo } = useTodoStore(
+		useShallow(store => ({
+			toggleTodo: store.toggleTodo,
+			deleteTodo: store.deleteTodo,
+		})),
+	);
 
 	const checkId = useId();
 
@@ -239,7 +265,19 @@ function TodoItem({
 }
 
 export function TodoList() {
-	const filteredTodos = useTodoStore(store => store.getFilteredTodos());
+	const { todos, filter, searchQuery, getFilteredTodos } = useTodoStore(
+		useShallow(store => ({
+			todos: store.todos,
+			filter: store.filter,
+			searchQuery: store.searchQuery,
+			getFilteredTodos: store.getFilteredTodos,
+		})),
+	);
+
+	const filteredTodos = useMemo(
+		() => getFilteredTodos(),
+		[getFilteredTodos, todos, filter, searchQuery],
+	);
 
 	return (
 		<>
