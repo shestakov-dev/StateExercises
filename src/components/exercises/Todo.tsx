@@ -217,15 +217,13 @@ export function FilterButtons() {
 	);
 }
 
-function TodoItem({
-	id,
-	text,
-	done,
-}: {
+interface TodoItemProps {
 	id: number;
 	text: string;
 	done: boolean;
-}) {
+}
+
+function TodoItem({ id, text, done }: TodoItemProps) {
 	const { toggleTodo, deleteTodo } = useTodoStore(
 		useShallow(store => ({
 			toggleTodo: store.toggleTodo,

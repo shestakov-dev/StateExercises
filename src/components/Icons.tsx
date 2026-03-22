@@ -309,6 +309,52 @@ export function IconGlobe({ className, size = 16 }: IconProps) {
 	);
 }
 
+export function IconChevronDown({ className, size = 16 }: IconProps) {
+	return (
+		<svg
+			{...defaults}
+			width={size}
+			height={size}
+			strokeWidth="2.5"
+			className={className}>
+			<polyline points="6 9 12 15 18 9" />
+		</svg>
+	);
+}
+
+export function IconChevronUp({ className, size = 16 }: IconProps) {
+	return (
+		<svg
+			{...defaults}
+			width={size}
+			height={size}
+			strokeWidth="2.5"
+			className={className}>
+			<polyline points="18 15 12 9 6 15" />
+		</svg>
+	);
+}
+
+export function IconLogOut({ className, size = 16 }: IconProps) {
+	return (
+		<svg
+			{...defaults}
+			width={size}
+			height={size}
+			strokeWidth="2"
+			className={className}>
+			<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+			<polyline points="16 17 21 12 16 7" />
+			<line
+				x1="21"
+				y1="12"
+				x2="9"
+				y2="12"
+			/>
+		</svg>
+	);
+}
+
 export function IconSearch({ className, size = 16 }: IconProps) {
 	return (
 		<svg

@@ -145,7 +145,7 @@ function NotificationProvider({ children }) {
 		description:
 			"Създайте количка за пазаруване. useReducer управлява масив от продукти с количество. Компонентите показват каталог, количката и обобщение (общо артикули, обща цена). Actions: ADD_ITEM, REMOVE_ITEM, UPDATE_QUANTITY, CLEAR_CART.",
 		hint:
-			"При ADD_ITEM: ако продуктът вече е в количката — увеличи quantity. Computed values (totalItems, totalPrice) се изчисляват с .reduce() директно от cart.items.",
+			"При ADD_ITEM: ако продуктът вече е в количката – увеличи quantity. Computed values (totalItems, totalPrice) се изчисляват с .reduce() директно от cart.items.",
 		codeExample: `function cartReducer(state, action) {
   switch (action.type) {
     case 'ADD_ITEM': {
@@ -214,7 +214,7 @@ const t = {
 		description:
 			"Създайте Todo приложение с Zustand store. Store-ът съдържа: todos[], filter (all/active/completed), searchQuery. Actions: addTodo, toggleTodo, deleteTodo, setFilter, setSearch. Computed: getFilteredTodos, getStats.",
 		hint:
-			"Винаги използвайте selector функция: useTodoStore(s => s.todos), НЕ useTodoStore().todos. Без selector — ВСЯКА промяна в store-а ще пре-рендерира компонента.",
+			"Винаги използвайте selector функция: useTodoStore(s => s.todos), НЕ useTodoStore().todos. Без selector – ВСЯКА промяна в store-а ще пре-рендерира компонента.",
 		codeExample: `const useTodoStore = create((set, get) => ({
   todos: [...],
   filter: 'all',
