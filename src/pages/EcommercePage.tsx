@@ -1,3 +1,10 @@
+import { EcommerceContent } from "../components/exercises/Ecommerce";
+import { EcommerceProvider } from "../contexts/ecommerce";
+
 export function EcommercePage() {
-	return <h1>Ecommerce</h1>;
+	return (
+		<EcommerceProvider>
+			<EcommerceContent />
+		</EcommerceProvider>
+	);
 }
