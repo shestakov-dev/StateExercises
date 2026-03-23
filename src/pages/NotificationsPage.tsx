@@ -9,11 +9,11 @@ import {
 export function NotificationsPage() {
 	return (
 		<NotificationProvider>
-			<div className="notif-demo">
+			<div className="notification-demo">
 				<NotificationCount />
 
-				<div className="notif-demo__grid">
-					<div className="notif-demo__controls">
+				<div className="notification-demo__grid">
+					<div className="notification-demo__controls">
 						<AddNotificationPanel />
 
 						<ClearAllButton />

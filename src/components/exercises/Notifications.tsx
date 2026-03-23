@@ -175,13 +175,13 @@ export function NotificationCount() {
 	const count = notifications.length;
 
 	return (
-		<div className="notif-count-bar">
+		<div className="notification-count-bar">
 			<span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
 				Активни известия
 			</span>
 
 			<span
-				className={`notif-badge ${count > 0 ? "notif-badge--active" : ""}`}
+				className={`notification-badge ${count > 0 ? "notification-badge--active" : ""}`}
 				aria-label={`${count} активни известия`}>
 				{count}
 			</span>
@@ -200,7 +200,7 @@ export function AddNotificationPanel() {
 
 	return (
 		<section
-			className="notif-add-panel"
+			className="notification-add-panel"
 			style={{
 				borderRadius: "var(--radius-lg)",
 				border: "1px solid var(--border)",
@@ -210,7 +210,7 @@ export function AddNotificationPanel() {
 			aria-label="Добави известие">
 			<p className="form-label">Добави известие</p>
 
-			<div className="notif-add-panel__btns">
+			<div className="notification-add-panel__btns">
 				{buttons.map(button => {
 					const config = NOTIFICATIONS_CONFIG[button.type];
 
@@ -218,7 +218,7 @@ export function AddNotificationPanel() {
 						<button
 							key={button.type}
 							type="button"
-							className={`button notif-add-btn notif-add-btn--${button.type}`}
+							className={`button notification-add-btn notification-add-btn--${button.type}`}
 							onClick={() => addNotification(button.type, button.message)}
 							aria-label={`Добави ${config.label.toLowerCase()} известие`}>
 							<config.Icon />
@@ -229,7 +229,7 @@ export function AddNotificationPanel() {
 				})}
 			</div>
 
-			<p className="notif-hint">Известията изчезват след 5 секунди</p>
+			<p className="notification-hint">Известията изчезват след 5 секунди</p>
 		</section>
 	);
 }
@@ -239,49 +239,49 @@ export function NotificationList() {
 
 	return (
 		<section
-			className="notif-list-wrap"
+			className="notification-list-wrap"
 			aria-label="Списък с известия"
 			aria-live="polite"
 			aria-atomic="false"
 			role="log">
 			{notifications.length === 0 ? (
 				<p
-					className="notif-empty"
+					className="notification-empty"
 					role="status">
 					Няма активни известия.
 				</p>
 			) : (
-				<ul className="notif-list">
+				<ul className="notification-list">
 					{notifications.map(notification => {
 						const config = NOTIFICATIONS_CONFIG[notification.type];
 
 						return (
 							<li
 								key={notification.id}
-								className={`notif-item ${exitingIds.includes(notification.id) ? "notif-item--exiting" : ""}`}
+								className={`notification-item ${exitingIds.includes(notification.id) ? "notification-item--exiting" : ""}`}
 								style={{ background: config.background, borderColor: config.border }}
 								role="alert"
 								aria-label={`${config.label}: ${notification.message}`}>
 								<span
-									className="notif-item__icon"
+									className="notification-item__icon"
 									aria-hidden="true"
 									style={{ color: config.iconColor, borderColor: config.border }}>
 									<config.Icon size={18} />
 								</span>
 
-								<div className="notif-item__body">
+								<div className="notification-item__body">
 									<span
-										className="notif-item__type"
+										className="notification-item__type"
 										style={{ color: config.iconColor }}>
 										{config.label}
 									</span>
 
-									<p className="notif-item__msg">{notification.message}</p>
+									<p className="notification-item__msg">{notification.message}</p>
 								</div>
 
 								<button
 									type="button"
-									className="notif-item__close"
+									className="notification-item__close"
 									onClick={() => dismissNotification(notification.id)}
 									aria-label={`Затвори известие: ${notification.message}`}>
 									<IconX />
@@ -305,7 +305,7 @@ export function ClearAllButton() {
 	return (
 		<button
 			type="button"
-			className="button button--danger notif-clear-btn"
+			className="button button--danger notification-clear-btn"
 			onClick={clearAll}
 			aria-label={`Изчисти всички ${notifications.length} известия`}>
 			Изчисти всички ({notifications.length})

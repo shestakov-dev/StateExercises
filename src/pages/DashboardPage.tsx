@@ -41,9 +41,9 @@ export function DashboardOverviewView() {
 	}
 
 	const stats = [
-		{ label: "Завършени", value: "12", colorModifier: "green" },
-		{ label: "Точки", value: "840", colorModifier: "yellow" },
-		{ label: "Напредък", value: "68%", colorModifier: "accent" },
+		{ label: translate("completed"), value: "12", colorModifier: "green" },
+		{ label: translate("points"), value: "840", colorModifier: "yellow" },
+		{ label: translate("progress"), value: "68%", colorModifier: "accent" },
 	] as const;
 
 	const quizProgress = [
@@ -132,12 +132,12 @@ export function DashboardOverviewView() {
 						{showAllQuizzes ? (
 							<>
 								<IconChevronUp size={14} />
-								Виж по-малко
+								{translate("showLess")}
 							</>
 						) : (
 							<>
 								<IconChevronDown size={14} />
-								Виж още {quizProgress.length - 4}
+								{translate("showMore")} {quizProgress.length - 4}
 							</>
 						)}
 					</button>
@@ -148,6 +148,8 @@ export function DashboardOverviewView() {
 }
 
 export function DashboardQuizzesView() {
+	const { translate } = useDashboardLanguage();
+
 	const quizzes = [
 		{ name: "HTML & CSS", questions: 32, done: true },
 		{ name: "JavaScript ES6+", questions: 45, done: true },
@@ -160,7 +162,7 @@ export function DashboardQuizzesView() {
 		<main
 			className="dashboard-main"
 			tabIndex={-1}>
-			<h1 className="dashboard-page-title">Тестове</h1>
+			<h1 className="dashboard-page-title">{translate("quizzes")}</h1>
 
 			<ul className="dashboard-quiz-item-list">
 				{quizzes.map(quiz => (
@@ -169,12 +171,12 @@ export function DashboardQuizzesView() {
 						className="dashboard-quiz-item">
 						<div className="dashboard-quiz-item__info">
 							<p className="dashboard-quiz-item__name">{quiz.name}</p>
-							<p className="dashboard-quiz-item__meta">{quiz.questions} въпроса</p>
+							<p className="dashboard-quiz-item__meta">{quiz.questions} {translate("questions")}</p>
 						</div>
 
 						<span
 							className={`dashboard-quiz-badge${quiz.done ? " dashboard-quiz-badge--done" : ""}`}>
-							{quiz.done ? "Завършен" : "Незавършен"}
+							{quiz.done ? translate("complete") : translate("incomplete")}
 						</span>
 					</li>
 				))}
@@ -196,11 +198,11 @@ export function DashboardSettingsView() {
 		<main
 			className="dashboard-main"
 			tabIndex={-1}>
-			<h1 className="dashboard-page-title">Настройки</h1>
+			<h1 className="dashboard-page-title">{translate("settings")}</h1>
 
 			<div className="dashboard-settings-card">
 				<div className="dashboard-settings-row">
-					<p className="dashboard-settings-label">Потребител</p>
+					<p className="dashboard-settings-label">{translate("user")}</p>
 
 					<p className="dashboard-settings-value">{user.name}</p>
 
@@ -209,10 +211,10 @@ export function DashboardSettingsView() {
 
 				<div className="dashboard-settings-row dashboard-settings-row--inline">
 					<div>
-						<p className="dashboard-settings-label">Тема</p>
+						<p className="dashboard-settings-label">{translate("theme")}</p>
 
 						<p className="dashboard-settings-value">
-							{theme === "dark" ? "Тъмна" : "Светла"}
+							{theme === "dark" ? translate("dark") : translate("light")}
 						</p>
 					</div>
 

@@ -28,6 +28,18 @@ const translations = {
 		login: "Вход",
 		logout: "Изход",
 		enterName: "Вашето име",
+		completed: "Завършени",
+		points: "Точки",
+		progress: "Напредък",
+		questions: "въпроса",
+		complete: "Завършен",
+		incomplete: "Незавършен",
+		user: "Потребител",
+		theme: "Тема",
+		dark: "Тъмна",
+		light: "Светла",
+		showLess: "Виж по-малко",
+		showMore: "Виж още",
 	},
 	en: {
 		dashboard: "Dashboard",
@@ -37,6 +49,18 @@ const translations = {
 		login: "Login",
 		logout: "Logout",
 		enterName: "Your name",
+		completed: "Completed",
+		points: "Points",
+		progress: "Progress",
+		questions: "questions",
+		complete: "Done",
+		incomplete: "Incomplete",
+		user: "User",
+		theme: "Theme",
+		dark: "Dark",
+		light: "Light",
+		showLess: "Show less",
+		showMore: "Show more",
 	},
 } as const;
 
@@ -279,7 +303,7 @@ function DashboardHeader({
 				{title}
 			</span>
 
-			<div className="dashboard-header-actions">
+			<div className="dashboard-header-actions" style={{ marginLeft: "auto" }}>
 				<button
 					type="button"
 					className="dashboard-header-pill dashboard-lang-switcher"
