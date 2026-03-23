@@ -153,7 +153,7 @@ export function SidebarNavList<Key extends string = string>({
 						<span>{item.label}</span>
 
 						{(item.count ?? 0) > 0 && (
-							<span className="ecom-tab-badge">{item.count}</span>
+							<span className="sidebar-nav-badge">{item.count}</span>
 						)}
 					</button>
 				</li>

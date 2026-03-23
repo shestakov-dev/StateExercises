@@ -46,6 +46,20 @@
 	outline-offset: 2px;
 }
 
+.sidebar-nav-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 18px;
+	height: 18px;
+	padding: 0 4px;
+	border-radius: var(--radius-full);
+	background: var(--accent-dim);
+	color: var(--accent);
+	font-size: 0.65rem;
+	font-weight: 800;
+}
+
 @media (max-width: 700px) {
 	.sidebar-drawer-backdrop {
 		display: block;

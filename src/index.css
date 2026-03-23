@@ -35,10 +35,10 @@
 }
 
 [data-theme="light"] {
-	--bg-base: #eef2f7;
-	--bg-surface: #f6f9fd;
-	--bg-raised: #ffffff;
-	--bg-overlay: #e4eaf3;
+	--bg-base: #dfe5ee;
+	--bg-surface: #e8eef6;
+	--bg-raised: #f4f7fc;
+	--bg-overlay: #d3dceb;
 	--border: #c6d0e0;
 	--border-light: #b7c4d9;
 	--text-primary: #0f1a2f;
@@ -49,8 +49,10 @@
 	--accent-dim: rgba(37, 99, 235, 0.12);
 	--green: #16a34a;
 	--green-dim: rgba(22, 163, 74, 0.12);
-	--yellow: #ca8a04;
-	--yellow-dim: rgba(202, 138, 4, 0.12);
+	--yellow: #8a7300;
+	--yellow-dim: rgba(186, 150, 0, 0.18);
+	--diff-medium: #7a6500;
+	--diff-medium-bg: rgba(186, 150, 0, 0.2);
 	--red: #dc2626;
 	--red-dim: rgba(220, 38, 38, 0.12);
 }

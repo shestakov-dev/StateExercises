@@ -303,7 +303,9 @@ function DashboardHeader({
 				{title}
 			</span>
 
-			<div className="dashboard-header-actions" style={{ marginLeft: "auto" }}>
+			<div
+				className="dashboard-header-actions"
+				style={{ marginLeft: "auto" }}>
 				<button
 					type="button"
 					className="dashboard-header-pill dashboard-lang-switcher"
@@ -360,10 +362,7 @@ function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
 				<SidebarNavList
 					items={navItems}
 					activeKey={activePage}
-					onSelect={key => {
-						setActivePage(key);
-						onClose();
-					}}
+					onSelect={key => setActivePage(key)}
 				/>
 			</nav>
 		</SidebarDrawer>

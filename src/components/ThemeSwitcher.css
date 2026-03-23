@@ -37,7 +37,7 @@
 }
 
 .dashboard-header .theme-switcher,
-.ecom-navbar .theme-switcher,
+.ecommerce-navbar .theme-switcher,
 .dashboard-header-pill.theme-switcher {
 	border-color: rgba(255, 255, 255, 0.25);
 	background: rgba(255, 255, 255, 0.1);
@@ -50,14 +50,14 @@
 }
 
 .dashboard-header .theme-switcher:hover,
-.ecom-navbar .theme-switcher:hover,
+.ecommerce-navbar .theme-switcher:hover,
 .dashboard-header-pill.theme-switcher:hover {
 	background: rgba(255, 255, 255, 0.2);
 	border-color: rgba(255, 255, 255, 0.4);
 }
 
 .dashboard-header .theme-switcher:focus-visible,
-.ecom-navbar .theme-switcher:focus-visible,
+.ecommerce-navbar .theme-switcher:focus-visible,
 .dashboard-header-pill.theme-switcher:focus-visible {
 	outline: 2px solid rgba(255, 255, 255, 0.8);
 	outline-offset: 2px;
