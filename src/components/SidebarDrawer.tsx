@@ -1,5 +1,7 @@
 import { useRef, type KeyboardEvent, type ReactNode } from "react";
 
+import "./SidebarDrawer.css";
+
 interface HamburgerButtonProps {
 	isOpen: boolean;
 	onToggle: () => void;

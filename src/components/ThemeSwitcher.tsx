@@ -1,6 +1,8 @@
 import { IconMoon, IconSun } from "./Icons";
 import { useTheme } from "../contexts/theme";
 
+import "./ThemeSwitcher.css";
+
 interface ThemeSwitcherProps {
 	className?: string;
 	compact?: boolean;

@@ -17,6 +17,17 @@
 	background: #0284c7;
 }
 
+.theme-demo-header .theme-switcher {
+	background: rgba(255, 255, 255, 0.15);
+	border-color: rgba(255, 255, 255, 0.3);
+	color: #fff;
+}
+
+.theme-demo-header .theme-switcher:hover {
+	background: rgba(255, 255, 255, 0.25);
+	border-color: rgba(255, 255, 255, 0.5);
+}
+
 .theme-demo-brand {
 	font-weight: 800;
 	font-size: 1rem;

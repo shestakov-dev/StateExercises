@@ -91,6 +91,25 @@
 	background: rgba(255, 255, 255, 0.1);
 }
 
+.dashboard-hamburger {
+	color: #fff;
+}
+
+.dashboard-hamburger:hover {
+	background: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 700px) {
+	.dashboard-brand {
+		display: none;
+	}
+
+	.dashboard-sidebar.sidebar-drawer {
+		top: 0;
+		height: 100%;
+	}
+}
+
 .dashboard-user-menu {
 	position: relative;
 }

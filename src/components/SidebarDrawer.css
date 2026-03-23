@@ -1,0 +1,71 @@
+.sidebar-drawer-backdrop {
+	display: none;
+	position: absolute;
+	inset: 0;
+	background: rgba(15, 23, 42, 0.42);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease;
+	z-index: 20;
+	border: none;
+	padding: 0;
+	cursor: default;
+}
+
+.sidebar-drawer-backdrop--open {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.hamburger-btn {
+	display: none;
+	width: 34px;
+	height: 34px;
+	border-radius: var(--radius);
+	border: none;
+	background: transparent;
+	padding: 0;
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 4px;
+	transition: background 0.15s;
+}
+
+.hamburger-btn span {
+	display: block;
+	width: 16px;
+	height: 2px;
+	border-radius: 999px;
+	background: currentColor;
+}
+
+.hamburger-btn:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+	.sidebar-drawer-backdrop {
+		display: block;
+	}
+
+	.sidebar-drawer {
+		position: absolute;
+		left: 0;
+		width: min(260px, 82vw);
+		transform: translateX(-105%);
+		transition: transform 0.2s ease;
+		box-shadow: 14px 0 22px rgba(2, 6, 23, 0.28);
+		z-index: 30;
+	}
+
+	.sidebar-drawer--open {
+		transform: translateX(0);
+	}
+
+	.hamburger-btn {
+		display: inline-flex;
+	}
+}
