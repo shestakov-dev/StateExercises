@@ -2,51 +2,20 @@ import {
 	createContext,
 	useContext,
 	useState,
-	useEffect,
 	useId,
-	useRef,
+	type ComponentType,
 	type ReactNode,
+	type SyntheticEvent,
+	type FocusEvent,
 } from "react";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { IconGlobe, IconLogOut, IconChevronDown } from "../Icons";
-
-interface User {
-	name: string;
-	role: string;
-}
-
-interface AuthContextType {
-	user: User | null;
-	login: (name: string) => void;
-	logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | null>(null);
-
-function AuthProvider({ children }: { children: ReactNode }) {
-	const [user, setUser] = useState<User | null>(null);
-
-	return (
-		<AuthContext.Provider
-			value={{
-				user,
-				login: name => setUser({ name, role: "student" }),
-				logout: () => setUser(null),
-			}}>
-			{children}
-		</AuthContext.Provider>
-	);
-}
-
-export function useDashboardAuth(): AuthContextType {
-	const context = useContext(AuthContext);
-
-	if (!context) {
-		throw new Error("useAuth must be used within an AuthProvider");
-	}
-
-	return context;
-}
+import {
+	SidebarDrawer,
+	HamburgerButton,
+	SidebarNavList,
+	type SidebarNavListItem,
+} from "../SidebarDrawer";
 
 const translations = {
 	bg: {
@@ -69,11 +38,50 @@ const translations = {
 	},
 } as const;
 
-export type LanguageKey = keyof typeof translations.bg;
-export type TranslateFunction = (key: LanguageKey) => string;
+interface DashboardUser {
+	name: string;
+	role: string;
+}
+
+interface AuthContextValue {
+	user: DashboardUser | null;
+	login: (name: string) => void;
+	logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextValue | null>(null);
+
+function AuthProvider({ children }: { children: ReactNode }) {
+	const [user, setUser] = useState<DashboardUser | null>(null);
+
+	return (
+		<AuthContext.Provider
+			value={{
+				user,
+				login: name => setUser({ name, role: "student" }),
+				logout: () => setUser(null),
+			}}>
+			{children}
+		</AuthContext.Provider>
+	);
+}
+
+export function useDashboardAuth(): AuthContextValue {
+	const context = useContext(AuthContext);
+
+	if (!context) {
+		throw new Error("useDashboardAuth must be used within an AuthProvider");
+	}
+
+	return context;
+}
+
+type Language = keyof typeof translations;
+type TranslationKey = keyof typeof translations.bg;
+type TranslateFunction = (key: TranslationKey) => string;
 
 interface LanguageContextValue {
-	language: "bg" | "en";
+	language: Language;
 	translate: TranslateFunction;
 	toggleLanguage: () => void;
 }
@@ -81,7 +89,7 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 function LanguageProvider({ children }: { children: ReactNode }) {
-	const [language, setLanguage] = useState<keyof typeof translations>("bg");
+	const [language, setLanguage] = useState<Language>("bg");
 
 	return (
 		<LanguageContext.Provider
@@ -89,7 +97,7 @@ function LanguageProvider({ children }: { children: ReactNode }) {
 				language,
 				translate: key => translations[language][key],
 				toggleLanguage: () =>
-					setLanguage(previousLanguage => (previousLanguage === "bg" ? "en" : "bg")),
+					setLanguage(previous => (previous === "bg" ? "en" : "bg")),
 			}}>
 			{children}
 		</LanguageContext.Provider>
@@ -100,16 +108,96 @@ export function useDashboardLanguage(): LanguageContextValue {
 	const context = useContext(LanguageContext);
 
 	if (!context) {
-		throw new Error("useLanguage must be used within a LanguageProvider");
+		throw new Error(
+			"useDashboardLanguage must be used within a LanguageProvider",
+		);
 	}
 
 	return context;
 }
 
+export interface HeaderUserMenuUser {
+	name: string;
+	role?: string;
+}
+
+interface HeaderUserMenuProps {
+	user: HeaderUserMenuUser;
+	onLogout: () => void;
+	logoutLabel?: string;
+}
+
+export function HeaderUserMenu({
+	user,
+	onLogout,
+	logoutLabel = "Изход",
+}: HeaderUserMenuProps) {
+	const [isOpen, setIsOpen] = useState(false);
+
+	function handleToggle(event: SyntheticEvent<HTMLDetailsElement>) {
+		setIsOpen(event.currentTarget.open);
+	}
+
+	function handleBlur(event: FocusEvent<HTMLDetailsElement>) {
+		if (!event.currentTarget.contains(event.relatedTarget)) {
+			event.currentTarget.open = false;
+		}
+	}
+
+	return (
+		<details
+			className="dashboard-user-menu"
+			onToggle={handleToggle}
+			onBlur={handleBlur}>
+			<summary
+				className="dashboard-user-trigger"
+				aria-label={`Меню на ${user.name}`}>
+				<span
+					className="dashboard-avatar"
+					aria-hidden="true">
+					{user.name[0].toUpperCase()}
+				</span>
+
+				<span className="dashboard-user-trigger__name">{user.name}</span>
+
+				<IconChevronDown
+					size={12}
+					className={`dashboard-user-trigger__chevron${isOpen ? " dashboard-user-trigger__chevron--open" : ""}`}
+				/>
+			</summary>
+
+			<div
+				className="dashboard-user-dropdown"
+				role="menu">
+				<div className="dashboard-user-dropdown__info">
+					<span className="dashboard-user-dropdown__name">{user.name}</span>
+
+					{user.role && (
+						<span className="dashboard-user-dropdown__role">{user.role}</span>
+					)}
+				</div>
+
+				<div className="dashboard-user-dropdown__divider" />
+
+				<button
+					type="button"
+					className="dashboard-user-dropdown__logout"
+					onClick={onLogout}
+					role="menuitem"
+					aria-label={`${logoutLabel} (${user.name})`}>
+					<IconLogOut size={14} />
+
+					{logoutLabel}
+				</button>
+			</div>
+		</details>
+	);
+}
+
 export interface DashboardPageConfig {
 	key: string;
 	getLabel: (translate: TranslateFunction) => string;
-	Content: React.ComponentType;
+	Content: ComponentType;
 	requiresAuth?: boolean;
 }
 
@@ -122,50 +210,70 @@ interface DashboardLayoutContextValue {
 const DashboardLayoutContext =
 	createContext<DashboardLayoutContextValue | null>(null);
 
+interface DashboardLayoutProviderProps {
+	children: ReactNode;
+	pages: DashboardPageConfig[];
+	defaultPage?: string;
+}
+
+function DashboardLayoutProvider({
+	children,
+	pages,
+	defaultPage,
+}: DashboardLayoutProviderProps) {
+	const [activePage, setActivePage] = useState(
+		defaultPage ?? pages[0]?.key ?? "",
+	);
+
+	return (
+		<DashboardLayoutContext.Provider
+			value={{ activePage, setActivePage, pages }}>
+			{children}
+		</DashboardLayoutContext.Provider>
+	);
+}
+
 function useDashboardLayoutContext(): DashboardLayoutContextValue {
 	const context = useContext(DashboardLayoutContext);
 
 	if (!context) {
 		throw new Error(
-			"useDashboardLayoutContext must be used within DashboardLayout",
+			"useDashboardLayoutContext must be used within DashboardLayoutProvider",
 		);
 	}
 
 	return context;
 }
 
-function DashboardHeader({ title = "QuizDash" }: { title?: string }) {
+interface DashboardHeaderProps {
+	title?: string;
+	isSidebarOpen?: boolean;
+	onToggleSidebar?: () => void;
+}
+
+function DashboardHeader({
+	title = "QuizDash",
+	isSidebarOpen = false,
+	onToggleSidebar,
+}: DashboardHeaderProps) {
 	const { user, logout } = useDashboardAuth();
 	const { language, translate, toggleLanguage } = useDashboardLanguage();
-
-	const [isOpen, setIsOpen] = useState(false);
-
-	function handleToggle(event: React.SyntheticEvent<HTMLDetailsElement>) {
-		setIsOpen(event.currentTarget.open);
-	}
-
-	function handleBlur(event: React.FocusEvent<HTMLDetailsElement>) {
-		if (!event.currentTarget.contains(event.relatedTarget)) {
-			event.currentTarget.open = false;
-		}
-	}
-
-	useEffect(() => {
-		setIsOpen(false);
-	}, [user]);
-
-	function handleLogout() {
-		setIsOpen(false);
-
-		logout();
-	}
 
 	return (
 		<header
 			className="dashboard-header"
 			aria-label="Заглавна лента">
+			{user && onToggleSidebar && (
+				<HamburgerButton
+					isOpen={isSidebarOpen}
+					onToggle={onToggleSidebar}
+					controls="dashboard-sidebar-drawer"
+					className="dashboard-hamburger"
+				/>
+			)}
+
 			<span
-				className="dashboard-name"
+				className="dashboard-brand"
 				aria-label={title}>
 				{title}
 			</span>
@@ -191,129 +299,49 @@ function DashboardHeader({ title = "QuizDash" }: { title?: string }) {
 				/>
 
 				{user && (
-					<details
-						className="dashboard-user-menu"
-						onToggle={handleToggle}
-						onBlur={handleBlur}>
-						<summary
-							className="dashboard-user-trigger"
-							aria-label={`Меню на ${user.name}`}>
-							<span
-								className="dashboard-avatar"
-								aria-hidden="true">
-								{user.name[0].toUpperCase()}
-							</span>
-
-							<span className="dashboard-user-trigger__name">{user.name}</span>
-
-							<IconChevronDown
-								size={12}
-								className={`dashboard-user-trigger__chevron${isOpen ? " dashboard-user-trigger__chevron--open" : ""}`}
-							/>
-						</summary>
-
-						<div
-							className="dashboard-user-dropdown"
-							role="menu">
-							<div className="dashboard-user-dropdown__info">
-								<span className="dashboard-user-dropdown__name">{user.name}</span>
-
-								<span className="dashboard-user-dropdown__role">{user.role}</span>
-							</div>
-
-							<div className="dashboard-user-dropdown__divider" />
-
-							<button
-								type="button"
-								className="dashboard-user-dropdown__logout"
-								onClick={handleLogout}
-								role="menuitem"
-								aria-label={`${translate("logout")} (${user.name})`}>
-								<IconLogOut size={14} />
-
-								{translate("logout")}
-							</button>
-						</div>
-					</details>
+					<HeaderUserMenu
+						user={user}
+						onLogout={logout}
+						logoutLabel={translate("logout")}
+					/>
 				)}
 			</div>
 		</header>
 	);
 }
 
-function DashboardSidebar() {
+interface DashboardSidebarProps {
+	isOpen: boolean;
+	onClose: () => void;
+}
+
+function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
 	const { pages, activePage, setActivePage } = useDashboardLayoutContext();
 	const { translate } = useDashboardLanguage();
 
-	const navButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
-
-	function registerNavButtonRef(key: string, button: HTMLButtonElement | null) {
-		navButtonRefs.current[key] = button;
-	}
-
-	function handleSidebarKeyDown(
-		event: React.KeyboardEvent<HTMLButtonElement>,
-		index: number,
-	) {
-		const lastIndex = pages.length - 1;
-		let nextIndex = index;
-
-		switch (event.key) {
-			case "ArrowDown":
-			case "ArrowRight":
-				nextIndex = index === lastIndex ? 0 : index + 1;
-				break;
-
-			case "ArrowUp":
-			case "ArrowLeft":
-				nextIndex = index === 0 ? lastIndex : index - 1;
-				break;
-
-			case "Home":
-				nextIndex = 0;
-				break;
-
-			case "End":
-				nextIndex = lastIndex;
-				break;
-
-			default:
-				return;
-		}
-
-		event.preventDefault();
-
-		const nextPage = pages[nextIndex];
-
-		if (!nextPage) {
-			return;
-		}
-
-		setActivePage(nextPage.key);
-		navButtonRefs.current[nextPage.key]?.focus();
-	}
+	const navItems: SidebarNavListItem[] = pages.map(({ key, getLabel }) => ({
+		key,
+		label: getLabel(translate),
+	}));
 
 	return (
-		<nav
+		<SidebarDrawer
+			id="dashboard-sidebar-drawer"
+			isOpen={isOpen}
+			onClose={onClose}
 			className="dashboard-sidebar"
-			aria-label="Странична навигация">
-			<ul>
-				{pages.map(({ key, getLabel }, index) => (
-					<li key={key}>
-						<button
-							type="button"
-							className={`dashboard-nav-item${activePage === key ? " dashboard-nav-item--active" : ""}`}
-							onClick={() => setActivePage(key)}
-							onKeyDown={event => handleSidebarKeyDown(event, index)}
-							ref={button => registerNavButtonRef(key, button)}
-							tabIndex={activePage === key ? 0 : -1}
-							aria-current={activePage === key ? "page" : undefined}>
-							{getLabel(translate)}
-						</button>
-					</li>
-				))}
-			</ul>
-		</nav>
+			ariaLabel="Странична навигация">
+			<nav aria-label="Странична навигация">
+				<SidebarNavList
+					items={navItems}
+					activeKey={activePage}
+					onSelect={key => {
+						setActivePage(key);
+						onClose();
+					}}
+				/>
+			</nav>
+		</SidebarDrawer>
 	);
 }
 
@@ -325,15 +353,15 @@ function LoginForm() {
 
 	const inputId = useId();
 
-	const MAX_LOGIN_NAME_LENGTH = 24;
+	const MAX_NAME_LENGTH = 24;
 
-	function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
+	function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
 		event.preventDefault();
 
-		const normalizedName = name.trim().slice(0, MAX_LOGIN_NAME_LENGTH);
+		const normalized = name.trim().slice(0, MAX_NAME_LENGTH);
 
-		if (normalizedName) {
-			login(normalizedName);
+		if (normalized) {
+			login(normalized);
 		}
 	}
 
@@ -355,10 +383,8 @@ function LoginForm() {
 					className="form-input"
 					placeholder={translate("enterName")}
 					value={name}
-					onChange={event =>
-						setName(event.target.value.slice(0, MAX_LOGIN_NAME_LENGTH))
-					}
-					maxLength={MAX_LOGIN_NAME_LENGTH}
+					onChange={event => setName(event.target.value.slice(0, MAX_NAME_LENGTH))}
+					maxLength={MAX_NAME_LENGTH}
 					required
 					autoComplete="name"
 				/>
@@ -394,25 +420,41 @@ function DashboardContent() {
 	return <Content />;
 }
 
-interface DashboardLayoutProps {
-	pages: DashboardPageConfig[];
-	defaultPage?: string;
+interface DashboardLayoutFrameProps {
 	title?: string;
 }
 
-function DashboardLayoutFrame({ title }: Pick<DashboardLayoutProps, "title">) {
+function DashboardLayoutFrame({ title }: DashboardLayoutFrameProps) {
 	const { user } = useDashboardAuth();
+
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 	return (
 		<div className="dashboard-shell">
-			<DashboardHeader title={title} />
+			<DashboardHeader
+				title={title}
+				isSidebarOpen={isSidebarOpen}
+				onToggleSidebar={() => setIsSidebarOpen(open => !open)}
+			/>
 
 			<div className="dashboard-body">
-				{user && <DashboardSidebar />}
+				{user && (
+					<DashboardSidebar
+						isOpen={isSidebarOpen}
+						onClose={() => setIsSidebarOpen(false)}
+					/>
+				)}
+
 				<DashboardContent />
 			</div>
 		</div>
 	);
+}
+
+export interface DashboardLayoutProps {
+	pages: DashboardPageConfig[];
+	defaultPage?: string;
+	title?: string;
 }
 
 export function DashboardLayout({
@@ -420,17 +462,14 @@ export function DashboardLayout({
 	defaultPage,
 	title = "QuizDash",
 }: DashboardLayoutProps) {
-	const [activePage, setActivePage] = useState(
-		defaultPage ?? pages[0]?.key ?? "",
-	);
-
 	return (
 		<AuthProvider>
 			<LanguageProvider>
-				<DashboardLayoutContext.Provider
-					value={{ activePage, setActivePage, pages }}>
+				<DashboardLayoutProvider
+					pages={pages}
+					defaultPage={defaultPage}>
 					<DashboardLayoutFrame title={title} />
-				</DashboardLayoutContext.Provider>
+				</DashboardLayoutProvider>
 			</LanguageProvider>
 		</AuthProvider>
 	);

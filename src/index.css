@@ -3674,9 +3674,17 @@ code {
 	color: #fff;
 }
 
+.dashboard-hamburger:hover {
+	background: rgba(255, 255, 255, 0.15);
+}
+
 @media (max-width: 700px) {
 	.hamburger-btn {
 		display: inline-flex;
+	}
+
+	.dashboard-brand {
+		display: none;
 	}
 
 	.ecom-layout {
