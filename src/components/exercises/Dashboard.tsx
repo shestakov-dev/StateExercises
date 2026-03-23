@@ -17,6 +17,8 @@ import {
 	type SidebarNavListItem,
 } from "../SidebarDrawer";
 
+import "./Dashboard.css";
+
 const translations = {
 	bg: {
 		dashboard: "Табло",
@@ -226,8 +228,7 @@ function DashboardLayoutProvider({
 	);
 
 	return (
-		<DashboardLayoutContext.Provider
-			value={{ activePage, setActivePage, pages }}>
+		<DashboardLayoutContext.Provider value={{ activePage, setActivePage, pages }}>
 			{children}
 		</DashboardLayoutContext.Provider>
 	);

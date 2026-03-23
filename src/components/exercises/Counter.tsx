@@ -1,5 +1,7 @@
 import { useReducer, useId } from "react";
 
+import "./Counter.css";
+
 interface CounterState {
 	count: number;
 	history: Array<{ previous: number; label: string; result: number }>;

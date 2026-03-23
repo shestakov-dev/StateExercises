@@ -12,6 +12,8 @@ import {
 	IconX,
 } from "../Icons";
 
+import "./Notifications.css";
+
 type NotificationType = "success" | "error" | "warning";
 
 interface Notification {

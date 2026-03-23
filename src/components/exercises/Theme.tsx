@@ -1,6 +1,8 @@
 import { useTheme } from "../../contexts/theme";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 
+import "./Theme.css";
+
 export function DemoHeader() {
 	const { theme } = useTheme();
 

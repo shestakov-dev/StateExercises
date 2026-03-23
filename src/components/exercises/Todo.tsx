@@ -3,6 +3,8 @@ import { useShallow } from "zustand/react/shallow";
 import { useTodoStore, type FilterType } from "../../stores/todoStore";
 import { IconX, IconSearch } from "../Icons";
 
+import "./Todo.css";
+
 export function Stats() {
 	const { todos, getStats } = useTodoStore(
 		useShallow(store => ({

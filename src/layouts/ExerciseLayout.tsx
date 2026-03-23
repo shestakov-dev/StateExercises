@@ -7,6 +7,8 @@ import {
 import { IconArrowLeft } from "../components/Icons";
 import { ThemeSwitcher } from "../components/ThemeSwitcher";
 
+import "./ExerciseLayout.css";
+
 interface ExerciseLayoutProps {
 	exerciseId: number;
 }
