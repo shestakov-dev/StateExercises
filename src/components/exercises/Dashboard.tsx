@@ -2,11 +2,12 @@ import {
 	createContext,
 	useContext,
 	useState,
+	useEffect,
+	useRef,
 	useId,
 	type ComponentType,
 	type ReactNode,
 	type SyntheticEvent,
-	type FocusEvent,
 } from "react";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { IconGlobe, IconLogOut, IconChevronDown } from "../Icons";
@@ -159,22 +160,38 @@ export function HeaderUserMenu({
 	logoutLabel = "Изход",
 }: HeaderUserMenuProps) {
 	const [isOpen, setIsOpen] = useState(false);
+	const menuRef = useRef<HTMLDetailsElement>(null);
+
+	useEffect(() => {
+		if (!isOpen) {
+			return;
+		}
+
+		function handlePointerDown(event: PointerEvent) {
+			const node = menuRef.current;
+
+			if (node && !node.contains(event.target as Node)) {
+				setIsOpen(false);
+			}
+		}
+
+		document.addEventListener("pointerdown", handlePointerDown);
+
+		return () => {
+			document.removeEventListener("pointerdown", handlePointerDown);
+		};
+	}, [isOpen]);
 
 	function handleToggle(event: SyntheticEvent<HTMLDetailsElement>) {
 		setIsOpen(event.currentTarget.open);
 	}
 
-	function handleBlur(event: FocusEvent<HTMLDetailsElement>) {
-		if (!event.currentTarget.contains(event.relatedTarget)) {
-			event.currentTarget.open = false;
-		}
-	}
-
 	return (
 		<details
+			ref={menuRef}
 			className="dashboard-user-menu"
-			onToggle={handleToggle}
-			onBlur={handleBlur}>
+			open={isOpen}
+			onToggle={handleToggle}>
 			<summary
 				className="dashboard-user-trigger"
 				aria-label={`Меню на ${user.name}`}>
